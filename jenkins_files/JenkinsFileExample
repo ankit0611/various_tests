@@ -1,0 +1,17 @@
+node {
+    stage('IcQueryStep') {
+        echo 'Checkout....'
+        checkout([$class: 'GitSCM', branches: [[name: '*/devel-1.0.0']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'IcQueryStep']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'greenbars', url: 'https://greenbars@192.168.2.8:8443/r/~greenbars/IcQueryStep.git']]])
+        echo "$WORKSPACE/IcQueryStep"
+        dir("$WORKSPACE/IcQueryStep") {
+            	sh './gradlew clean'
+            	// deleteDir()
+        }
+    }
+    stage('Test') {
+        echo 'Building....'
+    }
+    stage('Deploy') {
+        echo 'Deploying....'
+    }
+}

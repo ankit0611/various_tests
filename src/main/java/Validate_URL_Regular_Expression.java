@@ -15,8 +15,28 @@ public class Validate_URL_Regular_Expression {
 		strings_to_match.clear();
 		strings_to_match = null;
 	}
-
+	
 	private static void match_comand_parameters() {
+		print_method_name();
+		// regular expression to match WEB URLS
+		regex = "(^[\\w\\.]+=[\\w /:\\-\\.\\t\\${}]*$\\r?\\n?)*";
+		
+		strings_to_match.add("URL1=jdbc:h2:user.home/out/ICGUI/SOURCE.USER");
+		strings_to_match.add("URL2=jdbc:h2:~/IC_GUI/ICGUI_R165_RZV_57");
+		strings_to_match.add("URL3=jdbc:h2:/IC_GUI/ICGUI_R165_RZV_57");
+		strings_to_match.add("URL4=jdbc:h2:${user.home}/out/ICGUI/${SOURCE.USER}");
+		strings_to_match.add("URL5=jdbc:h2:$user.home/out/ICGUI/$SOURCE.USER");
+		strings_to_match.add("am.von=05.2009");
+		strings_to_match.add("KIDICAP.MI.QUERY.NAME=POC PC Download");
+		strings_to_match.add("KIDICAP_DB_HOST=sro-oracle-gb");
+		strings_to_match.add("KIDICAP_DB_NAME=orcl");
+		strings_to_match.add("KIDICAP_DB_USER=KIDICAP_R165_RZV_57");
+		strings_to_match.add("KIDICAP_DB_PASS=KIDICAP_R165_RZV_57");
+		strings_to_match.add("KIDICAP_DB_PORT=1521");
+		strings_to_match.add("KIDICAP_URL=http://sro-misc1-gb:57180");
+	}
+
+	private static void match_comand_parameters_take_1() {
 		print_method_name();
 		// regular expression to match WEB URLS
 		regex = "(^[\\w\\.]+=[\\w /:\\-\\.\\t]*$\\r?\\n?)*";

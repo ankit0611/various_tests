@@ -1,0 +1,116 @@
+#!groovy
+
+def gitProjectsAndBranch = [
+"CoreWebUI" : "master",
+"Admin" : "master",
+"BaseJob" : "master",
+"BaseSecurity" : "master",
+"ComandRTInstaller" : "devel-2.1.1",
+"ComandRTStarter" : "master",
+"CommonPDI" : "master",
+"ConnectIcJob" : "master",
+"CUSTOMER-Products" : "devel-16.5.1.669",
+"IcQueryStep" : "master",
+"CustomerTool" : "devel-1.0.3",
+"CustomerToolInstaller" : "master",
+"CustomerToolMigrationInstaller" : "master",
+"CustomerToolPPayMigrationInstaller" : "master",
+"JobManager" : "master",
+"SpoonInstaller" : "master"
+]
+
+
+def projects_to_build =[
+/*
+"CoreWebUI",
+"BaseJob",
+"BaseSecurity",
+"ComandRTStarter",
+"ComandRTInstaller",
+"CustomerToolInstaller",
+"CustomerToolMigrationInstaller",
+"CustomerToolPPayMigrationInstaller",
+"SpoonInstaller",
+"CommonPDI",
+"ConnectIcJob/IcEntity",
+"ConnectIcJob/IcEJB",
+"ConnectIcJob/IcJob",
+"ConnectIcJob/IcJobEngine",
+*/
+"CustomerTool/CustomerTool-host",
+"CustomerTool/CustomerTool-se",
+"CustomerTool/CustomerTool-ejb",
+"CustomerTool/CustomerTool-web",
+"CustomerTool/CustomerTool-rest",
+"CUSTOMER-Products/DeliveryUniversalCustom",
+"CustomerTool/CustomerTool-ear",
+"CustomerTool/CustomerTool-migration",
+"CustomerTool/CustomerTool-ppaymigration",
+/*
+"IcQueryStep",
+"Admin/Admin-ejb",
+"Admin/Admin-web",
+"Admin/Admin-ear",
+"Admin/Admin-migration",
+"JobManager/JobManager-ejb",
+"JobManager/JobManager-web",
+"JobManager/JobManager-ear",
+"JobManager/JobManager-migration",
+*/
+"CUSTOMER-Products/DeliveryPropertyGenerator",
+"CUSTOMER-Products/DeliveryAdmin",
+"CUSTOMER-Products/DeliveryAdminMigration",
+"CUSTOMER-Products/DeliveryCustomerTool",
+"CUSTOMER-Products/DeliveryCustomerToolMigration",
+"CUSTOMER-Products/DeliveryCustomerToolPPayMigration",
+"CUSTOMER-Products/DeliveryMCJ",
+"CUSTOMER-Products/DeliveryJobManagerMigration",
+"CUSTOMER-Products/DeliveryCustomerApp",
+"CUSTOMER-Products/DeliveryMCD",
+"CUSTOMER-Products/DeliverySpoon"]
+def project = ""
+def branch = ""
+node {
+	stage("Hard clean workspace")
+	{
+		dir("$WORKSPACE") {
+			deleteDir()
+		}
+	}
+	for (project_branch in mapToList(gitProjectsAndBranch)) 
+	{
+		project = project_branch[0]
+		branch = project_branch[1]
+		stage("Clone ${project}") {
+			echo "checking out Project=${project} with branch='${branch}'"
+			checkout([$class: 'GitSCM', branches: [[name: "*/${branch}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${project}"]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'xxxxxx', url: "https://xxxx@xxxx:oooo/r/~zzzz/${project}.git"]]])
+		}
+	}
+	for (project_dir in projects_to_build) 
+	{
+		stage("Build " + project_dir)
+		{
+			echo "Building Project= " + project_dir
+			dir("$WORKSPACE/"+project_dir) {
+				if (project_dir.contains("Admin/") || project_dir.contains("ConnectIcJob/") 
+					|| project_dir.contains("JobManager/"))
+				{
+					sh '../gradlew -g "/home/jenkins/CUSTOMERprofile" clean publish'
+				}
+				else
+				{
+					sh './gradlew -g "/home/jenkins/CUSTOMERprofile" clean publish'
+				}
+				//deleteDir()
+			}
+		}
+	}
+}
+
+// Required due to JENKINS-27421
+@NonCPS
+List<List<?>> mapToList(Map map) {
+  return map.collect { it ->
+    [it.key, it.value]
+  }
+}
