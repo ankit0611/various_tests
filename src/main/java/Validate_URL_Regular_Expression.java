@@ -39,13 +39,14 @@ public class Validate_URL_Regular_Expression {
 	private static void match_comand_parameters_take_1() {
 		print_method_name();
 		// regular expression to match WEB URLS
-		regex = "(^[\\w\\.]+=[\\w /:\\-\\.\\t]*$\\r?\\n?)*";
+		regex = "(^\\w+=[\\w \\{\\}\\$/:\\-\\.\\t]*$\\r?\\n?)*";
+		regex = "(^\\w+=[\\w /:\\-\\.\\t]*$\\r?\\n?)*";
 		
-		strings_to_match.add("URL1=jdbc:h2:user.home/out/ICGUI/SOURCE.USER");
+		strings_to_match.add("jdbc_url=jdbc:h2h1");
 		strings_to_match.add("URL2=jdbc:h2:~/IC_GUI/ICGUI_R165_RZV_57");
 		strings_to_match.add("URL3=jdbc:h2:/IC_GUI/ICGUI_R165_RZV_57");
 		strings_to_match.add("URL4=jdbc:h2:${user.home}/out/ICGUI/${SOURCE.USER}");
-		strings_to_match.add("am.von=05.2009");
+		strings_to_match.add("am_von=05.2009");
 		strings_to_match.add("KIDICAP.MI.QUERY.NAME=POC PC Download");
 		strings_to_match.add("KIDICAP_DB_HOST=sro-oracle-gb");
 		strings_to_match.add("KIDICAP_DB_NAME=orcl");
