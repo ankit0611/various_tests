@@ -19,3 +19,5 @@ VersionExt.java
 
 tmp/
 nohup.out
+
+/.externalToolBuilders/
