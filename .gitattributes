@@ -1,0 +1,3 @@
+*.sh eol=lf
+*.sh.tmpl eol=lf
+gradlew eol=lf
