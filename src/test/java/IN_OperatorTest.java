@@ -4,14 +4,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-/*
- * IN_OperatorTest.java
- *
- * Erstellung     : 19.10.2017 / Srivastava
- *
- * Copyright © by GiP mbH
- */
-
 public class IN_OperatorTest {
 
     @Test
