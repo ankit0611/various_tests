@@ -1,5 +1,6 @@
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -10,14 +11,21 @@ public class IN_OperatorTest {
     public void testSplitIntoList_singleDigit() throws Exception {
         List<String> output = IN_Operator.splitIntoList("1234");
         assertThat("1234").isIn(output);
-        assertThat(IN_Operator.validate("1234")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("1234")).isTrue();
+    }
+
+    @Test
+    public void testSplitIntoList_blank() throws Exception {
+        List<String> output = IN_Operator.splitIntoList(" ");
+        assertThat("").isIn(output);
+        assertThat(IN_Operator.validateInputForInOperator(" ")).isTrue();
     }
 
     @Test
     public void testSplitIntoList_singleString() throws Exception {
         List<String> output = IN_Operator.splitIntoList("abc");
         assertThat("abc").isIn(output);
-        assertThat(IN_Operator.validate("abc")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("abc")).isTrue();
     }
 
     @Test
@@ -27,7 +35,7 @@ public class IN_OperatorTest {
         assertThat("2345").isIn(output);
         assertThat("56").isIn(output);
         assertThat("78").isIn(output);
-        assertThat(IN_Operator.validate("1234,2345,56,78")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("1234,2345,56,78")).isTrue();
     }
 
     @Test
@@ -36,7 +44,7 @@ public class IN_OperatorTest {
         assertThat("abc").isIn(output);
         assertThat("xyz").isIn(output);
         assertThat("fgh").isIn(output);
-        assertThat(IN_Operator.validate("abc,xyz,fgh")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("abc,xyz,fgh")).isTrue();
     }
 
     @Test
@@ -45,7 +53,7 @@ public class IN_OperatorTest {
         assertThat("abc").isIn(output);
         assertThat("xyz").isIn(output);
         assertThat("fgh").isIn(output);
-        assertThat(IN_Operator.validate("abc, xyz,fgh ")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("abc, xyz,fgh ")).isTrue();
     }
 
     @Test
@@ -54,7 +62,7 @@ public class IN_OperatorTest {
         assertThat("abc").isIn(output);
         assertThat("x y z").isIn(output);
         assertThat("fgh").isIn(output);
-        assertThat(IN_Operator.validate("abc, x y z,fgh")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("abc, x y z,fgh")).isTrue();
     }
 
     @Test
@@ -63,7 +71,7 @@ public class IN_OperatorTest {
         assertThat("abc").isIn(output);
         assertThat(" xyz").isIn(output);
         assertThat("fgh ").isIn(output);
-        assertThat(IN_Operator.validate("\"abc\", \" xyz\", \"fgh \"")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("\"abc\", \" xyz\", \"fgh \"")).isTrue();
     }
 
     @Test
@@ -73,7 +81,7 @@ public class IN_OperatorTest {
         assertThat("23,45").isIn(output);
         assertThat("56").isIn(output);
         assertThat("78").isIn(output);
-        assertThat(IN_Operator.validate("\"12,34\",\"23,45\",\"56\",\"78\"")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("\"12,34\",\"23,45\",\"56\",\"78\"")).isTrue();
     }
 
     @Test
@@ -85,7 +93,7 @@ public class IN_OperatorTest {
         assertThat("45'").isIn(output);
         assertThat("'56'").isIn(output);
         assertThat("'78'").isIn(output);
-        assertThat(IN_Operator.validate("'12,34','23,45','56','78'")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("'12,34','23,45','56','78'")).isTrue();
     }
 
     @Test
@@ -93,7 +101,7 @@ public class IN_OperatorTest {
         List<String> output = IN_Operator.splitIntoList("\"he says \"\"hello\"\"\", \"he says \"\"goodbye\"\"\"");
         assertThat("he says \"hello\"").isIn(output);
         assertThat("he says \"goodbye\"").isIn(output);
-        assertThat(IN_Operator.validate("\"he says \"\"hello\"\"\", \"he says \"\"goodbye\"\"\"")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("\"he says \"\"hello\"\"\", \"he says \"\"goodbye\"\"\"")).isTrue();
     }
 
     @Test
@@ -101,7 +109,15 @@ public class IN_OperatorTest {
         List<String> output = IN_Operator.splitIntoList("he says \"\"hello\"\", he says \"\"goodbye\"\"");
         assertThat("he says \"hello\"").isIn(output);
         assertThat("he says \"goodbye\"").isIn(output);
-        assertThat(IN_Operator.validate("he says \"\"hello\"\", he says \"\"goodbye\"\"")).isFalse();
+        assertThat(IN_Operator.validateInputForInOperator("he says \"\"hello\"\",he says \"\"goodbye\"\"")).isFalse();
+    }
+
+    @Test
+    public void testSplitIntoList_seperators() throws Exception {
+        List<String> output = IN_Operator.splitIntoList("\"abcd\"; \"xyz\"");
+        // assertThat("he says \"hello\"").isIn(output);
+        // assertThat("he says \"goodbye\"").isIn(output);
+        assertThat(IN_Operator.validateInputForInOperator("\"abcd\"; \"xyz\"")).isFalse();
     }
 
     @Test
@@ -109,14 +125,14 @@ public class IN_OperatorTest {
         List<String> output = IN_Operator.splitIntoList("\"12\", 3");
         assertThat("12").isIn(output);
         assertThat("3").isIn(output);
-        assertThat(IN_Operator.validate("\"12\", 3")).isFalse();
+        assertThat(IN_Operator.validateInputForInOperator("\"12\",3")).isFalse();
     }
 
     @Test
     public void testSplitIntoList_blankQuoted() throws Exception {
         List<String> output = IN_Operator.splitIntoList("\"\"");
         assertThat("").isIn(output);
-        assertThat(IN_Operator.validate("\"\"")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator("\"\"")).isTrue();
     }
 
     @Test
@@ -124,7 +140,36 @@ public class IN_OperatorTest {
         List<String> output = IN_Operator.splitIntoList(" ,sdf");
         assertThat("").isIn(output);
         assertThat("sdf").isIn(output);
-        assertThat(IN_Operator.validate(" ,sdf")).isTrue();
+        assertThat(IN_Operator.validateInputForInOperator(" ,sdf")).isTrue();
+    }
+
+    @Test
+    public void testValidate_validateInOperatorInputs() throws Exception {
+        HashMap<String, Boolean> inputOutput = new HashMap<>();
+        inputOutput.put("1234,2345,56,78", true);
+        inputOutput.put("abc,xyz,fgh", true);
+        inputOutput.put("abc, xyz,fgh ", true);
+        inputOutput.put("abc, x y z,fgh", true);
+        inputOutput.put("\"abc\", \" xyz\", \"fgh \"", true);
+        inputOutput.put("\"12,34\",\"23,45\",\"56\",\"78\"", true);
+        inputOutput.put("\"he says \"\"hello\"\"\", \"he says \"\"goodbye\"\"\"", true);
+        inputOutput.put("he says \"\"hello\"\", he says \"\"goodbye\"\"", false);
+        inputOutput.put("he says \"\"hello\"\"; he says \"\"goodbye\"\"", false);
+        inputOutput.put("\"12\", 3", false);
+        inputOutput.put("3,\"12\"", false);
+        inputOutput.put("\"abc\", xyz, \"fgh \"", false);
+        inputOutput.put("\"\",\"abc\"", true);
+        inputOutput.put(",\"abc\"", false);
+        inputOutput.put("\"abcd\"; \"xyz\"", false);
+        inputOutput.put("\"abc\", \" x\"yz\", \"fgh \"", false);
+
+        for (String input : inputOutput.keySet()) {
+            if (inputOutput.get(input)) {
+                assertThat(IN_Operator.validateInputForInOperator(input)).isTrue();
+            } else {
+                assertThat(IN_Operator.validateInputForInOperator(input)).isFalse();
+            }
+        }
     }
 
 }
