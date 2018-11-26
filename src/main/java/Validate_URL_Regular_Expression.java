@@ -8,11 +8,21 @@ public class Validate_URL_Regular_Expression {
     public static ArrayList<String> strings_to_match = new ArrayList<>();
 
     public static void main(String[] args) {
-        match_jvm_arguments();
+        match_comand_with_comma();
 
         IsMatch(strings_to_match, regex);
         strings_to_match.clear();
         strings_to_match = null;
+    }
+
+    private static void match_comand_with_comma() {
+        print_method_name();
+        // regular expression to match WEB URLS
+        regex = "(^\\w+=[\\w /:\\-\\.\\t,\\\"\\\\]*$\\r?\\n?)*";
+
+        strings_to_match.add("key1=key,2");
+        strings_to_match.add("key1=key\"2");
+        strings_to_match.add("key1=key\\2");
     }
 
     private static void match_jvm_arguments() {
