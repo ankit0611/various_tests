@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class IN_Operator {
     private static final String DOUBLE_QUOTES = "\"";
@@ -82,14 +82,17 @@ public class IN_Operator {
             modified = userInput.replaceAll(",\\s*", ",");
             tokens = modified.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
             for (String s : tokens) {
-                if (!s.startsWith("\""))
+                if (!s.startsWith("\"")) {
                     return false;
-                if (!s.endsWith("\""))
+                }
+                if (!s.endsWith("\"")) {
                     return false;
+                }
                 modified = StringUtils.replace(s, DOUBLE_QUOTES + DOUBLE_QUOTES, "");
                 index_of_unquoted_quote = StringUtils.indexOf(modified, "\"", 1);
-                if (index_of_unquoted_quote > 0 && index_of_unquoted_quote < modified.length() - 1)
+                if (index_of_unquoted_quote > 0 && index_of_unquoted_quote < modified.length() - 1) {
                     return false;
+                }
             }
         }
         return true;
