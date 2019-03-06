@@ -21,3 +21,6 @@ tmp/
 nohup.out
 
 /.externalToolBuilders/
+/.idea/
+/out/
+/.idea/
