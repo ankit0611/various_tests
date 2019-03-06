@@ -1,3 +1,4 @@
+package random;
 /*
  * check_java_version.java
  *

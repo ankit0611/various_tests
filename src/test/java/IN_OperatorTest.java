@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import random.IN_Operator;
+
 public class IN_OperatorTest {
 
     @Test

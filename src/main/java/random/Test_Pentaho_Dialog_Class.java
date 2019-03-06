@@ -1,3 +1,4 @@
+package random;
 
 public class Test_Pentaho_Dialog_Class {
 	// Eclipse sdk needs to be installed.

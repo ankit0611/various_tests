@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import random.Library;
+
 public class LibraryTest {
     @Test
     public void testSomeLibraryMethod() {

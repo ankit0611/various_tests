@@ -1,3 +1,4 @@
+package random;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
@@ -15,7 +16,7 @@ public class Read_properties_without_values {
         props.load(Read_properties_without_values.class.getClassLoader()
                 .getResourceAsStream("properties_without_values.properties"));
 
-        System.out.println(props);
+        System.out.println(props.containsKey("prop1"));
 
     }
 

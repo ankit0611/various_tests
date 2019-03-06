@@ -1,3 +1,4 @@
+package random;
 
 public class Split_String_At_First_Occurance {
 
