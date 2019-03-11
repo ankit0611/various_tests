@@ -12,6 +12,7 @@ dependencies {
     //compile("de.gipmbh:icquerystep:1.0.1-SNAPSHOT:gipspoon") { transitive = false }
     compile("com.google.guava:guava:21.0")
     compile("junit:junit:4.12")
+    testCompile 'com.github.stefanbirkner:system-rules:1.19.0'
 }
 
 
