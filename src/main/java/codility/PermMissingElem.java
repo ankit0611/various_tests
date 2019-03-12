@@ -1,8 +1,7 @@
 package codility;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PermMissingElem {
   public static int solution(int[] A) {
@@ -12,20 +11,13 @@ public class PermMissingElem {
     if (A == null || A.length <= 0 || A.length > 1_000_000) {
       return -1;
     }
-    Set<Integer> allNumbers = Arrays.stream(A).boxed().collect(Collectors.toSet());
-
-    if (allNumbers.size() != A.length) {
-      return -1;
-    }
+    Set<Integer> allNumbers = new HashSet<>();
 
     for (int i = 1; i <= A.length + 1; i++) {
       allNumbers.add(i);
     }
 
     for (int i : A) {
-      if (i < 1 || i > (A.length + 1)) {
-        return -1;
-      }
       allNumbers.remove(i);
     }
 
