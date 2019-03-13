@@ -1,7 +1,6 @@
 package codility.challenges;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class MaximumTeamOutput {
 
@@ -22,12 +21,14 @@ public class MaximumTeamOutput {
       return -1;
     }
 
-    int[] sortedIntices =
-        IntStream.range(0, A.length)
-            .boxed()
-            .sorted((i, j) -> Math.abs(A[i] - B[i]) < Math.abs(A[j] - B[j]) ? 1 : -1)
-            .mapToInt(ele -> ele)
-            .toArray();
+    int[] diffs = new int[A.length];
+    Integer[] sortedIntices = new Integer[A.length];
+    for (int i = 0; i < A.length; i++) {
+      diffs[i] = Math.abs(A[i] - B[i]);
+      sortedIntices[i] = i;
+    }
+
+    Arrays.sort(sortedIntices, (i, j) -> diffs[i] < diffs[j] ? 1 : -1);
 
     int[] outputArray = new int[A.length];
 
@@ -38,8 +39,7 @@ public class MaximumTeamOutput {
 
     for (int i = 0; i < A.length; i++) {
 
-      if (A[sortedIntices[i]] > B[sortedIntices[i]]) {
-
+      if (A[sortedIntices[i]] >= B[sortedIntices[i]]) {
         if (aCounter > 0) {
           outputArray[i] = A[sortedIntices[i]];
           aCounter--;
@@ -47,42 +47,13 @@ public class MaximumTeamOutput {
           outputArray[i] = B[sortedIntices[i]];
           bCounter--;
         }
-      } else if (B[sortedIntices[i]] > A[sortedIntices[i]]) {
-
+      } else {
         if (bCounter > 0) {
           outputArray[i] = B[sortedIntices[i]];
           bCounter--;
         } else {
           outputArray[i] = A[sortedIntices[i]];
           aCounter--;
-        }
-      } else if (A[sortedIntices[i]] == B[sortedIntices[i]]) {
-        if (i == A.length - 1) {
-          if (aCounter > 0) {
-            outputArray[i] = A[sortedIntices[i]];
-            aCounter--;
-          } else {
-            outputArray[i] = B[sortedIntices[i]];
-            bCounter--;
-          }
-        } else {
-          if (A[i + 1] > B[i + 1]) {
-            if (bCounter > 0) {
-              outputArray[i] = B[sortedIntices[i]];
-              bCounter--;
-            } else {
-              outputArray[i] = A[sortedIntices[i]];
-              aCounter--;
-            }
-          } else {
-            if (aCounter > 0) {
-              outputArray[i] = A[sortedIntices[i]];
-              aCounter--;
-            } else {
-              outputArray[i] = B[sortedIntices[i]];
-              bCounter--;
-            }
-          }
         }
       }
     }
