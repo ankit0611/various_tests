@@ -13,7 +13,7 @@ public class PermMissingElemTest {
 
   @Test
   public void solutionNSingle() {
-    Assert.assertEquals(-1, PermMissingElem.solution(new int[] {0}));
+    Assert.assertEquals(1, PermMissingElem.solution(new int[] {2}));
   }
 
   @Test
